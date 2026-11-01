@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing</title>
+  <style>
+    :root { --purple: #6c5ce7; --ink: #1e1b3a; }
+
+    body {
+      margin: 0;
+      padding: 56px 16px;
+      background: #f6f7fb;
+      font-family: system-ui, Arial, sans-serif;
+      color: var(--ink);
+      text-align: center;
+    }
+
+    h1 { margin: 0 0 8px; font-size: 40px; }
+    .intro { margin: 0 0 28px; color: #6b6f85; }
+
+   
+    .toggle { display: inline-flex; border: 1px solid var(--purple); border-radius: 999px; overflow: hidden; }
+    .toggle button {
+      padding: 10px 26px;
+      border: 0;
+      background: #fff;
+      color: var(--purple);
+      font: inherit;
+      cursor: pointer;
+    }
+    .toggle button.on { background: var(--purple); color: #fff; }
+
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
+      margin: 36px auto 0;
+    }
+
+    .card {
+      position: relative;
+      padding: 28px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px #1e1b3a14;
+      text-align: left;
+    }
+    .card.popular { outline: 2px solid var(--purple); }
+    .card h3 { margin: 0; }
+    .badge {
+      position: absolute; top: 16px; right: 16px;
+      padding: 3px 10px;
+      background: var(--purple); color: #fff;
+      border-radius: 999px; font-size: 12px;
+    }
+
+    .price { margin: 10px 0; font-size: 44px; font-weight: 700; }
+    .price small { font-size: 16px; font-weight: 400; color: #6b6f85; }
+    .blurb { color: #6b6f85; }
+
+    ul { padding-left: 18px; line-height: 2; }
+
+    .cta {
+      display: block;
+      padding: 12px;
+      background: var(--purple);
+      color: #fff;
+      border-radius: 10px;
+      text-align: center;
+      text-decoration: none;
+    }
+    .cta:hover { background: #5646d6; }
+  </style>
+</head>
+<body>
+
+  <h1>Pricing</h1>
+  <p class="intro">Whether you're an individual, a brand or an agency, we've got you covered.</p>
+
+  <div class="toggle">
+    <button id="monthlyBtn" class="on">Monthly</button>
+    <button id="yearlyBtn">Yearly</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <script>
+    
+    const plans = [
+      { name: "Free",     monthlyPrice: 0,  blurb: "For trying things out",     channels: 1 },
+      { name: "Standard", monthlyPrice: 29, blurb: "Best for content creators", channels: 5,  popular: true },
+      { name: "Pro",      monthlyPrice: 59, blurb: "For growing teams",         channels: 15 },
+      { name: "Agency",   monthlyPrice: 99, blurb: "For agencies",              channels: 50 }
+    ];
+
+    let yearly = false;   
+
+    const grid       = document.getElementById("grid");
+    const monthlyBtn = document.getElementById("monthlyBtn");
+    const yearlyBtn  = document.getElementById("yearlyBtn");
+
+   
+    function drawCards() {
+      grid.innerHTML = plans.map(plan => {
+        const price  = yearly ? plan.monthlyPrice * 10 : plan.monthlyPrice;  
+        const period = yearly ? "yr" : "mo";
+
+        return `
+          <div class="card ${plan.popular ? "popular" : ""}">
+            ${plan.popular ? '<span class="badge">Popular</span>' : ""}
+            <h3>${plan.name}</h3>
+            <div class="price">$${price}<small>/${period}</small></div>
+            <p class="blurb">${plan.blurb}</p>
+            <hr>
+            <ul>
+              <li>${plan.channels} channels</li>
+              <li>${plan.channels * 80} posts per month</li>
+              <li>Analytics</li>
+            </ul>
+            <a class="cta" href="#">Get Started</a>
+          </div>`;
+      }).join("");
+    }
+
+  
+    function setBilling(isYearly) {
+      yearly = isYearly;
+      monthlyBtn.className = isYearly ? "" : "on";
+      yearlyBtn.className  = isYearly ? "on" : "";
+      drawCards();
+    }
+
+    monthlyBtn.onclick = () => setBilling(false);
+    yearlyBtn.onclick  = () => setBilling(true);
+
+    drawCards();
+  </script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #222;
+      font-family: system-ui, Arial, sans-serif;
+    }
+
+    .calculator {
+      width: 300px;
+      padding: 18px;
+      background: #111;
+      border-radius: 24px;
+      box-shadow: 0 20px 50px #0008;
+    }
+
+    .mode { margin-bottom: 8px; font-size: 12px; color: #888; letter-spacing: 1px; }
+
+    .display {
+      min-height: 56px;
+      overflow: hidden;
+      color: #fff;
+      font-size: 44px;
+      text-align: right;
+    }
+
+    .keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 14px; }
+
+    button {
+      height: 58px;
+      border: 0;
+      border-radius: 50%;
+      background: #333;
+      color: #fff;
+      font-size: 20px;
+      cursor: pointer;
+    }
+    button:hover  { filter: brightness(1.25); }
+    button:active { transform: scale(.95); }
+
+   
+    button.operator { background: #ff9f0a; }
+    button.function { background: #a5a5a5; color: #000; }
+    button.zero     { grid-column: span 2; border-radius: 29px; }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div class="mode">NORMAL MODE</div>
+    <div class="display" id="display">0</div>
+    <div class="keys" id="keys"></div>
+  </div>
+
+  <script>
+  
+    const buttons = [
+      { label: "AC",  type: "function" }, { label: "+/-", type: "function" },
+      { label: "%",   type: "function" }, { label: "/",   type: "operator" },
+      { label: "7",   type: "number" },   { label: "8",   type: "number" },
+      { label: "9",   type: "number" },   { label: "*",   type: "operator" },
+      { label: "4",   type: "number" },   { label: "5",   type: "number" },
+      { label: "6",   type: "number" },   { label: "-",   type: "operator" },
+      { label: "1",   type: "number" },   { label: "2",   type: "number" },
+      { label: "3",   type: "number" },   { label: "+",   type: "operator" },
+      { label: "0",   type: "zero" },     { label: ".",   type: "number" },
+      { label: "=",   type: "operator" }
+    ];
+
+    
+    let current  = "0";    
+    let previous = null;   
+    let operator = null;   
+    let startNewNumber = false;   
+
+    const display = document.getElementById("display");
+    const keys    = document.getElementById("keys");
+
+    
+    function calculate(a, b, op) {
+      a = Number(a);
+      b = Number(b);
+
+      switch (op) {
+        case "+": return String(a + b);
+        case "-": return String(a - b);
+        case "*": return String(a * b);
+        case "/": return b === 0 ? "Error" : String(a / b);
+        default:  return String(b);
+      }
+    }
+
+    
+    function pressNumber(label) {
+      if (current === "Error") current = "0";
+
+      if (startNewNumber || (current === "0" && label !== ".")) {
+        current = label;                       
+        startNewNumber = false;
+      } else if (!(label === "." && current.includes("."))) {
+        current += label;                      
+      }
+    }
+
+    
+    function pressOperator(label) {
+      if (operator && !startNewNumber) current = calculate(previous, current, operator);
+      previous = current;
+      operator = label;
+      startNewNumber = true;
+    }
+
+    
+    function pressEquals() {
+      if (!operator) return;
+      current = calculate(previous, current, operator);
+      operator = previous = null;
+      startNewNumber = true;
+    }
+
+    
+    function pressFunction(label) {
+      if (label === "AC")  { current = "0"; previous = operator = null; }
+      if (label === "+/-") current = String(-current);
+      if (label === "%")   current = String(current / 100);
+    }
+
+    
+    buttons.forEach(({ label, type }) => {
+      const button = document.createElement("button");
+      button.textContent = label === "*" ? "X" : label;   
+      button.className = type === "number" ? "" : type;
+
+      button.onclick = () => {
+        if (type === "number" || type === "zero") pressNumber(label);
+        else if (label === "=")                   pressEquals();
+        else if (type === "operator")             pressOperator(label);
+        else                                      pressFunction(label);
+
+        display.textContent = current;
+      };
+
+      keys.append(button);
+    });
+  </script>
+</body>
+</html>

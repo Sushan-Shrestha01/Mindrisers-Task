@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moon</title>
+  <style>
+   
+    :root {
+      --moon:   #ffa500;  
+      --rim:    #7a5200; 
+      --glow:   #ffee00;  
+      --crater: #e69500;  
+      --sky:    #0b1026;   
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 100%, #1b2550, var(--sky) 70%);
+      font-family: system-ui, Arial, sans-serif;
+    }
+
+   
+    .moon {
+      position: relative;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      border: 6px solid var(--rim);
+      background: var(--moon);
+      box-shadow: 0 0 20px 6px var(--glow);
+      overflow: hidden;           
+      cursor: pointer;
+      touch-action: none;         
+      transition: transform .2s;
+    }
+    .moon:hover  { transform: scale(1.04); }
+    .moon:active { transform: scale(.94); }   /* squishes when you press it */
+    .moon:focus-visible { outline: 3px solid #fff; outline-offset: 8px; }
+
+    .crater { position: absolute; border-radius: 50%; background: var(--crater); }
+    .crater.one   { width: 56px; height: 56px; top: 44px;  left: 140px; }
+    .crater.two   { width: 34px; height: 34px; top: 150px; left: 56px; }
+    .crater.three { width: 46px; height: 46px; top: 170px; left: 156px; }
+
+    
+    .shadow {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--sky);
+      opacity: .95;
+      filter: blur(2px);
+      transform: translateX(110%);   
+      transition: transform .3s ease-out;
+    }
+
+    .hint { position: fixed; bottom: 28px; color: #8f9bc4; font-size: 14px; }
+
+    
+    .star {
+      position: absolute;
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: #fff;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+    @keyframes twinkle { 50% { opacity: .2; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .star { animation: none; }
+      .moon, .shadow { transition: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="moon" id="moon" tabindex="0" role="button" aria-label="Moon. Click to change its phase.">
+    <div class="crater one"></div>
+    <div class="crater two"></div>
+    <div class="crater three"></div>
+    <div class="shadow" id="shadow"></div>
+  </div>
+
+  <p class="hint">Move over the moon, drag across it, or click it</p>
+
+  <script>
+    const moon   = document.getElementById("moon");
+    const shadow = document.getElementById("shadow");
+
+   
+    const phases = [110, 60, 25, 0, -25, -60];
+    let phaseIndex = 0;
+
+    function moveShadow(percent) {
+      shadow.style.transform = `translateX(${percent}%)`;
+    }
+
+    
+    moon.addEventListener("pointermove", (event) => {
+      const box = moon.getBoundingClientRect();
+      const x = (event.clientX - box.left) / box.width;   
+      moveShadow(110 - x * 220);
+    });
+
+    
+    moon.addEventListener("pointerleave", () => moveShadow(phases[phaseIndex]));
+
+    
+    function nextPhase() {
+      phaseIndex = (phaseIndex + 1) % phases.length;
+      moveShadow(phases[phaseIndex]);
+    }
+    moon.addEventListener("click", nextPhase);
+
+  
+    moon.addEventListener("keydown", (event) => {
+      if (["Enter", " ", "ArrowRight", "ArrowLeft"].includes(event.key)) {
+        event.preventDefault();
+        nextPhase();
+      }
+    });
+
+   
+    for (let i = 0; i < 80; i++) {
+      const star = document.createElement("div");
+      star.className = "star";
+      star.style.left = Math.random() * 100 + "vw";
+      star.style.top  = Math.random() * 100 + "vh";
+      star.style.animationDelay = Math.random() * 3 + "s";
+      document.body.append(star);
+    }
+  </script>
+</body>
+</html>

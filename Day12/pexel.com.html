@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pexel – Free stock photos</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    
+    :root {
+      --green-dark: #05a081;
+      --navy:       #1d3557;
+      --ink:        #1b2b2a;
+      --muted:      #5f6f6d;
+      --line:       #e3e9e8;
+      --paper:      #ffffff;
+      --radius:     14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "DM Sans", Arial, sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+
+  
+    nav {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      color: #fff;
+    }
+    .logo { font-size: 24px; font-weight: 700; }
+    nav .links { display: flex; gap: 24px; }
+    nav a { color: #fff; text-decoration: none; opacity: .9; }
+    nav a:hover { opacity: 1; text-decoration: underline; }
+    nav .join {
+      background: #fff; color: var(--ink);
+      padding: 8px 18px; border-radius: 999px; font-weight: 500;
+    }
+
+   
+    .hero {
+      min-height: 420px;
+      padding: 130px 40px 70px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      
+      background:
+        linear-gradient(rgba(0,0,0,.35), rgba(0,0,0,.35)),
+        linear-gradient(135deg, var(--green-dark), var(--navy));
+    }
+    .hero h1 {
+      max-width: 14em;
+      margin: 0 0 28px;
+      font-size: clamp(32px, 5vw, 56px);
+      line-height: 1.1;
+    }
+    .search {
+      display: flex;
+      max-width: 560px;
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .search input {
+      flex: 1;
+      border: 0;
+      padding: 16px 20px;
+      font: inherit;
+      outline: none;
+    }
+    .search button {
+      border: 0;
+      padding: 0 26px;
+      font: inherit;
+      font-weight: 500;
+      color: #fff;
+      background: var(--green-dark);
+      cursor: pointer;
+    }
+    .search button:hover { background: #048a6f; }
+
+    
+    .chips {
+      display: flex;
+      gap: 12px;
+      padding: 20px 40px;
+      overflow-x: auto;
+      border-bottom: 1px solid var(--line);
+    }
+    .chips a {
+      white-space: nowrap;
+      padding: 10px 20px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .chips a:hover,
+    .chips a.active { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+    
+    .grid {
+      columns: 3 220px;    
+      column-gap: 14px;
+      padding: 28px 40px 60px;
+    }
+    .photo {
+      position: relative;
+      margin: 0 0 14px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      break-inside: avoid;   
+      background: #ccc;      
+    }
+    .photo img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .4s;
+    }
+    .photo:hover img { transform: scale(1.04); }
+    .photo figcaption {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      padding: 28px 14px 12px;
+      color: #fff;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity .25s;
+      background: linear-gradient(transparent, rgba(0,0,0,.6));
+    }
+    .photo:hover figcaption { opacity: 1; }
+
+    
+    @media (max-width: 640px) {
+      nav, .chips, .grid { padding-left: 20px; padding-right: 20px; }
+      nav .links a:not(.join) { display: none; }
+      .hero { padding: 110px 20px 50px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <span class="logo">Pexel</span>
+    <div class="links">
+      <a href="#">Discover photos</a>
+      <a href="#">Wallpapers</a>
+      <a href="#">Leaderboard</a>
+      <a href="#">Challenges</a>
+      <a href="#" class="join">Join</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <h1>The best free stock photos, royalty free images &amp; videos shared by creators.</h1>
+    <div class="search">
+      <input type="search" placeholder="Search for free photos">
+      <button>Search</button>
+    </div>
+  </header>
+
+  <div class="chips">
+    <a href="#" class="active">Home</a>
+    <a href="#">Videos</a>
+    <a href="#">Leaderboard</a>
+    <a href="#">Challenges</a>
+    <a href="#">Winners Wall</a>
+  </div>
+
+  <main class="grid" id="grid"></main>
+
+  <script>
+    
+    const photos = [
+      { height: 300, caption: "Desert dunes",   color: "#e76f51", src: "https://picsum.photos/seed/dunes/600/400" },
+      { height: 200, caption: "Golden hour",    color: "#f4a261", src: "https://picsum.photos/seed/gold/600/400" },
+      { height: 260, caption: "Sunflower field", color: "#e9c46a", src: "https://picsum.photos/seed/field/600/400" },
+      { height: 340, caption: "Quiet forest",   color: "#8ab17d", src: "https://picsum.photos/seed/forest/600/500" },
+      { height: 220, caption: "Calm lagoon",    color: "#2a9d8f", src: "https://picsum.photos/seed/lagoon/600/400" },
+      { height: 280, caption: "Night harbor",   color: "#264653", src: "https://picsum.photos/seed/harbor/600/450" },
+      { height: 180, caption: "Morning haze",   color: "#f4a261", src: "https://picsum.photos/seed/haze/600/300" },
+      { height: 320, caption: "Rocky coast",    color: "#e76f51", src: "https://picsum.photos/seed/coast/600/500" },
+      { height: 240, caption: "Green valley",   color: "#8ab17d", src: "https://picsum.photos/seed/valley/600/400" },
+      { height: 300, caption: "Evening city",   color: "#264653", src: "https://picsum.photos/seed/city/600/450" },
+      { height: 200, caption: "Wild meadow",    color: "#e9c46a", src: "https://picsum.photos/seed/meadow/600/350" },
+      { height: 260, caption: "Teal waters",    color: "#2a9d8f", src: "https://picsum.photos/seed/waters/600/400" }
+    ];
+
+    
+    const grid = document.getElementById("grid");
+
+    photos.forEach(photo => {
+      const figure = document.createElement("figure");
+      figure.className = "photo";
+      figure.style.height = photo.height + "px";
+      figure.style.background = photo.color;
+
+      const img = document.createElement("img");
+      img.src = photo.src;
+      img.alt = photo.caption;
+      img.loading = "lazy";
+      
+      img.onerror = () => img.remove();
+
+      const caption = document.createElement("figcaption");
+      caption.textContent = photo.caption;
+
+      figure.append(img, caption);
+      grid.append(figure);
+    });
+  </script>
+
+</body>
+</html>

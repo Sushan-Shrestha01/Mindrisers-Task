@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook</title>
+  <style>
+    :root { --blue: #0866ff; --bg: #f0f2f5; --hover: #e4e6e9; --muted: #65676b; }
+
+    * { box-sizing: border-box; }
+
+    body { margin: 0; background: var(--bg); font-family: Helvetica, Arial, sans-serif; }
+
+   
+    header {
+      position: sticky; top: 0;
+      height: 56px;
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 16px;
+      background: #fff;
+      box-shadow: 0 1px 4px #0002;
+    }
+    .logo {
+      width: 40px; height: 40px;
+      display: grid; place-items: center;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff; font-size: 26px; font-weight: 700;
+    }
+
+    
+    .layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 20px;
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 0 12px;
+    }
+
+    
+    .avatar {
+      display: inline-block;
+      width: 36px; height: 36px;
+      margin-right: 10px;
+      vertical-align: middle;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8fa3c7, #5d6f94);
+    }
+
+    aside div { padding: 10px; border-radius: 8px; cursor: pointer; }
+    aside div:hover { background: var(--hover); }
+
+    .post {
+      margin-bottom: 16px;
+      padding: 16px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px #0002;
+      line-height: 1.5;
+    }
+    .post p { margin: 12px 0 0; }
+
+    @media (max-width: 700px) {
+      .layout { grid-template-columns: 1fr; }
+      aside { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">f</div>
+    <b>Sushan Shrestha</b>
+  </header>
+
+  <div class="layout">
+
+    <aside>
+      <div><span class="avatar"></span>Sushan Shrestha</div>
+      <div>Watch</div>
+      <div>Events</div>
+      <div>Friends</div>
+      <div>Memories</div>
+      <div>See More</div>
+    </aside>
+
+    <main>
+      <div class="post">
+        <span class="avatar"></span><b>Sushan Shrestha</b>
+        <p>Learning web development at Mindrisers. Today I built a calculator!</p>
+      </div>
+
+      <div class="post">
+        <span class="avatar"></span><b>Sushan Shrestha</b>
+        <p>Finished my CSS loaders and the moon animation.</p>
+      </div>
+    </main>
+
+  </div>
+</body>
+</html>

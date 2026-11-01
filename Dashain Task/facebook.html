@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook</title>
+  <style>
+    :root { --blue: #0866ff; --bg: #f0f2f5; --hover: #e4e6e9; --muted: #65676b; }
+
+    * { box-sizing: border-box; }
+
+    body { margin: 0; background: var(--bg); font-family: Helvetica, Arial, sans-serif; font-size: 15px; }
+
+    /* ---------- Top bar ---------- */
+    header {
+      position: sticky; top: 0; z-index: 5;
+      height: 56px;
+      display: flex; align-items: center; gap: 12px;
+      padding: 0 16px;
+      background: #fff;
+      box-shadow: 0 1px 4px #0002;
+    }
+    .logo {
+      width: 40px; height: 40px;
+      display: grid; place-items: center;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff; font-size: 26px; font-weight: 700;
+    }
+
+    /* ---------- Three columns: left menu | feed | right sidebar ---------- */
+    .layout {
+      display: grid;
+      grid-template-columns: 280px 1fr 280px;
+      gap: 20px;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .side div { padding: 10px; border-radius: 8px; cursor: pointer; }
+    .side div:hover { background: var(--hover); }
+    .side h4 { margin: 14px 10px 4px; color: var(--muted); }
+
+    .avatar {
+      display: inline-block;
+      width: 36px; height: 36px;
+      margin-right: 10px;
+      vertical-align: middle;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #8fa3c7, #5d6f94);
+    }
+
+    /* ---------- Stories ---------- */
+    .stories { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; }
+    .story {
+      flex: none;
+      width: 110px; height: 190px;
+      display: flex; align-items: flex-end;
+      padding: 10px;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* ---------- Posts ---------- */
+    .post {
+      margin-bottom: 16px;
+      padding: 16px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px #0002;
+    }
+    .post .time { color: var(--muted); font-size: 13px; }
+    .post .photo { height: 260px; margin-top: 10px; border-radius: 8px; background: linear-gradient(135deg, #cfd8ec, #aab6d6); }
+
+    @media (max-width: 1000px) {
+      .layout { grid-template-columns: 1fr; }
+      .side { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">f</div>
+    <b>Sushan Shrestha</b>
+  </header>
+
+  <div class="layout">
+
+    <!-- Left menu -->
+    <div class="side">
+      <div><span class="avatar"></span>Sushan Shrestha</div>
+      <div>Meta AI</div>
+      <div>Friends</div>
+      <div>Memories</div>
+      <div>Saved</div>
+      <div>Groups</div>
+      <div>Reels</div>
+      <div>Marketplace</div>
+      <div>See More</div>
+      <h4>Your Shortcuts</h4>
+      <div>IT Students of Nepal</div>
+      <div>Mindrisers Community</div>
+    </div>
+
+    <!-- Feed -->
+    <main>
+      <div class="stories">
+        <div class="story" style="background: #e76f51">Story 1</div>
+        <div class="story" style="background: #2a9d8f">Story 2</div>
+        <div class="story" style="background: #264653">Story 3</div>
+        <div class="story" style="background: #e9c46a; color: #222">Story 4</div>
+      </div>
+
+      <div class="post">
+        <span class="avatar"></span><b>Sushan Shrestha</b> <span class="time">4 hours ago</span>
+        <p>Learning web development at Mindrisers. Today I built a calculator!</p>
+        <div class="photo"></div>
+      </div>
+
+      <div class="post">
+        <span class="avatar"></span><b>Sushan Shrestha</b> <span class="time">4 hours ago</span>
+        <p>Finished my CSS loaders and the moon animation.</p>
+        <div class="photo"></div>
+      </div>
+    </main>
+
+    <!-- Right sidebar -->
+    <div class="side">
+      <h4>Sponsored</h4>
+      <div>Samsung Galaxy - Shop now</div>
+      <h4>Birthdays</h4>
+      <div>Ram Shrestha and 3 others have birthdays today</div>
+      <h4>Contacts</h4>
+      <div><span class="avatar"></span>Ram Shrestha</div>
+      <div><span class="avatar"></span>Anita Gurung</div>
+      <div><span class="avatar"></span>Nitesh Thapa</div>
+    </div>
+
+  </div>
+</body>
+</html>

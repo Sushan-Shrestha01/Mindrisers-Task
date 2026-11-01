@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress bar</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #f4f4f8;
+      font-family: system-ui, Arial, sans-serif;
+    }
+
+    .card {
+      width: min(500px, 90vw);
+      padding: 32px;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 6px 24px #4361ee22;
+      text-align: center;
+    }
+
+    h2 { margin: 0 0 20px; font-size: 44px; color: #1f2a5c; }
+
+    .track { height: 24px; background: #e3e6f5; border-radius: 12px; overflow: hidden; }
+
+    .fill {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, #4361ee, #4cc9f0);
+      transition: width .3s;
+    }
+
+    button {
+      margin-top: 24px;
+      padding: 12px 32px;
+      border: 0;
+      border-radius: 999px;
+      background: #4361ee;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover { background: #3651d4; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2 id="percent">0%</h2>
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <button id="startBtn">Start</button>
+  </div>
+
+  <script>
+    const percentText = document.getElementById("percent");
+    const fill        = document.getElementById("fill");
+    const startBtn    = document.getElementById("startBtn");
+
+    let progress = 0;
+    let timer;
+
+    
+    startBtn.onclick = () => {
+      clearInterval(timer);   
+      progress = 0;
+      startBtn.textContent = "Restart";
+
+      timer = setInterval(() => {
+        progress++;
+        fill.style.width = progress + "%";
+        percentText.textContent = progress + "%";
+
+        if (progress >= 100) clearInterval(timer);
+      }, 50);
+    };
+  </script>
+</body>
+</html>

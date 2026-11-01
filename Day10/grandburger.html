@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grand Burger</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --red: #c0392b; --yellow: #f1c40f; --dark: #1b1b1b; }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--dark);
+      color: #fff;
+      font-family: "DM Sans", Arial, sans-serif;
+    }
+
+    h1, h2, .brand { font-family: "Bebas Neue", Impact, sans-serif; font-weight: 400; letter-spacing: 1px; }
+
+    
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 16px 40px;
+      background: var(--red);
+    }
+    nav a { margin: 0 10px; color: #fff; text-decoration: none; }
+    nav a:hover { text-decoration: underline; }
+    .brand { font-size: 32px; }
+
+  
+    .hero {
+      padding: 110px 40px;
+      text-align: center;
+      background: radial-gradient(circle at 50% 0%, #3a3a3a, #232323);
+    }
+    .hero h1 { margin: 0; font-size: clamp(56px, 10vw, 110px); line-height: .95; color: var(--yellow); }
+    .hero p { font-size: 20px; color: #ddd; }
+
+    
+    .burgers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 64px 40px;
+    }
+    .burger {
+      padding: 28px 24px;
+      background: #fff;
+      color: #222;
+      border-radius: 16px;
+      text-align: center;
+    }
+    .burger .pic { font-size: 76px; }
+    .burger h2 { margin: 8px 0; font-size: 30px; color: var(--red); }
+    .burger p { margin: 0; color: #555; }
+
+   
+    section { max-width: 800px; margin: 0 auto; padding: 56px 40px; text-align: center; }
+    section h2 { margin: 0 0 8px; font-size: 40px; color: var(--yellow); }
+    section p { color: #ccc; }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      background: var(--yellow);
+      color: #222;
+      border-radius: 30px;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .btn:hover { background: #ffd93b; }
+
+    @media (max-width: 700px) { nav { flex-direction: column; gap: 8px; } }
+  </style>
+</head>
+<body>
+
+  <nav id="home">
+    <div>
+      <a href="#home">Home</a>
+      <a href="#ourmenus">Our Menus</a>
+      <a href="#about">About</a>
+    </div>
+    <span class="brand">Grand Burger</span>
+    <div>
+      <a href="#order">Order Online</a>
+      <a href="#findus">Find Us</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1>TASTE THE<br>DIFFERENCE</h1>
+    <p>Don't need a silver fork to eat a good burger</p>
+  </div>
+
+  <div class="burgers">
+    <div class="burger">
+      <div class="pic">🍔</div>
+      <h2>FISH BURGER</h2>
+      <p>Life is like a burger, the more you add to it, the better it becomes.</p>
+    </div>
+    <div class="burger">
+      <div class="pic">🍔</div>
+      <h2>CHICKEN BURGER</h2>
+      <p>Life is like a burger, the more you add to it, the better it becomes.</p>
+    </div>
+    <div class="burger">
+      <div class="pic">🍔</div>
+      <h2>VEG BURGER</h2>
+      <p>Life is like a burger, the more you add to it, the better it becomes.</p>
+    </div>
+  </div>
+
+  <section id="ourmenus">
+    <h2>OUR MENUS</h2>
+    <p>Fresh burgers made daily with local ingredients: fish, chicken, veg and our house special.</p>
+    <a class="btn" href="#">VIEW MENUS</a>
+  </section>
+
+  <section id="order">
+    <h2>ORDER DELIVERY</h2>
+    <p>Hot burgers delivered to your door within 30 minutes anywhere in town.</p>
+    <a class="btn" href="#">ORDER ONLINE</a>
+  </section>
+
+  <section id="about">
+    <h2>ABOUT</h2>
+    <p>Grand Burger has served honest, tasty burgers since 2020.</p>
+  </section>
+
+  <section id="findus">
+    <h2>FIND US</h2>
+    <p>Putlisadak, Kathmandu. Open daily 10 AM to 9 PM.</p>
+  </section>
+
+</body>
+</html>

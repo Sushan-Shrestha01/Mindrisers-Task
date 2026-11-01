@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rotate</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #f4f4f8;
+      font-family: system-ui, Arial, sans-serif;
+    }
+
+    .box {
+      width: 160px; height: 160px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #e63946, #ff8c42);
+      box-shadow: 0 12px 30px #e6394655;
+      animation: spin 3s linear infinite;   /* one full turn every 3 seconds */
+    }
+
+    /* Hover over the box to pause it */
+    .box:hover { animation-play-state: paused; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .hint { position: fixed; bottom: 24px; color: #8a8fa6; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="box"></div>
+  <p class="hint">Hover over the box to pause it</p>
+</body>
+</html>

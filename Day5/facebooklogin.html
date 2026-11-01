@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook - Login</title>
+  <style>
+    :root { --blue: #0866ff; --green: #42b72a; --line: #dddfe2; }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #f0f2f5;
+      font-family: Helvetica, Arial, sans-serif;
+    }
+
+    .box { width: min(396px, 90vw); margin-top: 80px; text-align: center; }
+
+    .logo { color: var(--blue); font-size: 52px; font-weight: 700; letter-spacing: -2px; }
+    .tagline { margin: 4px 0 20px; font-size: 18px; color: #1c1e21; }
+
+  
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px #0000001a, 0 8px 16px #0000001a;
+    }
+
+    input {
+      padding: 14px 16px;
+      font-size: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    input:focus { outline: 2px solid var(--blue); border-color: transparent; }
+
+    .login {
+      padding: 12px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--blue);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .login:hover { background: #0753d1; }
+
+    a { color: var(--blue); text-decoration: none; font-size: 14px; }
+    a:hover { text-decoration: underline; }
+
+    hr { width: 100%; border: 0; border-top: 1px solid var(--line); margin: 6px 0; }
+
+    .new {
+      align-self: center;
+      padding: 12px 20px;
+      background: var(--green);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    .new:hover { text-decoration: none; background: #36a420; }
+
+    footer { margin-top: auto; padding: 24px; color: #65676b; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="logo">facebook</div>
+    <p class="tagline">Log into Facebook</p>
+
+    <form>
+      <input type="text" placeholder="Email address or phone number">
+      <input type="password" placeholder="Password">
+      <button class="login" type="button">Log in</button>
+      <a href="#">Forgot password?</a>
+      <hr>
+      <a class="new" href="#">Create new account</a>
+    </form>
+  </div>
+
+  <footer>Meta</footer>
+</body>
+</html>
