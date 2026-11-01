@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task - Mindrisers</title>
+  <style>
+
+    :root {
+      --bg: #101828;
+      --card: #1b2638;
+      --text: #eef2f7;
+      --muted: #9aa8bd;
+      --accent: #5eead4;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 64px 24px;
+      font-family: system-ui, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    main { max-width: 900px; margin: 0 auto; }
+
+    h1 { font-size: clamp(34px, 6vw, 56px); margin: 0 0 8px; }
+    .subtitle { color: var(--muted); margin: 0 0 40px; font-size: 18px; }
+
+    
+    .days {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .day {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 20px;
+      border: 1px solid #ffffff14;
+    }
+
+    .day h2 { margin: 0 0 14px; font-size: 18px; color: var(--accent); }
+
+    .links { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    .links a {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #ffffff12;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .links a:hover { background: var(--accent); color: #0b1220; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Hi, I'm Sushan</h1>
+    <p class="subtitle">All my class tasks from Mindrisers, in one place.</p>
+
+    <div class="days">
+      <section class="day">
+        <h2>Day 3</h2>
+        <div class="links"><a href="Day3/cv.html">CV</a></div>
+      </section>
+
+      <section class="day">
+        <h2>Day 4</h2>
+        <div class="links">
+          <a href="Day4/table.html">Table</a>
+          <a href="Day4/wikipedia.html">Wikipedia</a>
+        </div>
+      </section>
+
+      <section class="day">
+        <h2>Day 5</h2>
+        <div class="links">
+          <a href="Day5/facebooklogin.html">Facebook login</a>
+          <a href="Day5/portfolio.html">Portfolio</a>
+        </div>
+      </section>
+
+      <section class="day">
+        <h2>Day 7</h2>
+        <div class="links"><a href="Day7/price-card.html">Price card</a></div>
+      </section>
+
+      <section class="day">
+        <h2>Day 10</h2>
+        <div class="links"><a href="Day10/grandburger.html">Grand Burger</a></div>
+      </section>
+
+      <section class="day">
+        <h2>Day 11</h2>
+        <div class="links"><a href="Day11/facebook.html">Facebook home page</a></div>
+      </section>
+
+      <section class="day">
+        <h2>Day 12</h2>
+        <div class="links"><a href="Day12/pexel.com.html">Pexel home page</a></div>
+      </section>
+
+      <section class="day">
+        <h2>Day 13</h2>
+        <div class="links"><a href="Day13/moon.html">Moon</a></div>
+      </section>
+
+      <section class="day">
+        <h2>Dashain task</h2>
+        <div class="links"><a href="Dashain%20Task/facebook.html">Facebook clone</a></div>
+      </section>
+
+      <section class="day">
+        <h2>Day 14</h2>
+        <div class="links">
+          <a href="Day14/progressbar.html">Progress bar</a>
+          <a href="Day14/calculator.html">Calculator</a>
+        </div>
+      </section>
+
+      <section class="day">
+        <h2>Day 15</h2>
+        <div class="links">
+          <a href="Day15/rotate.html">Rotate</a>
+          <a href="Day15/css-loader.html">CSS loader</a>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
