@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grid Garden - A game for learning CSS grid layout</title>
+<link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;700&family=Lilita+One&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:#5ea548;border-top:11px solid #3a3a3a;color:#fff;font-family:'Cabin',Arial,sans-serif;font-size:18px;line-height:1.33}
+.page{display:flex;gap:57px;padding:36px 17px 40px 38px;max-width:1920px}
+.left{width:845px;flex:none}
+.head{display:flex;justify-content:space-between;align-items:center;height:74px;position:relative}
+h1{margin:0;font-family:'Lilita One','Cabin',sans-serif;font-weight:400;font-size:47px;letter-spacing:1px;color:#f4ffe0;text-transform:uppercase}
+.levels{display:flex;align-items:center;width:266px;height:37px;background:rgba(255,255,255,.18);border-radius:4px;overflow:hidden}
+.levels button{width:33px;height:100%;border:0;cursor:pointer;background:rgba(255,255,255,.12);color:#b7d9ab;font-size:16px}
+.levels button:hover{background:rgba(255,255,255,.25)}
+.levels button:disabled{opacity:.4;cursor:default}
+.levels .label{flex:1;text-align:center;color:#e9f5e1;cursor:pointer;user-select:none}
+.levels .label::after{content:' ▾';font-size:11px}
+.menu{display:none;position:absolute;right:0;top:66px;width:266px;max-height:360px;overflow:auto;background:#fff;color:#4d6b43;border-radius:4px;z-index:9;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.menu.open{display:block}
+.menu div{padding:7px 14px;cursor:pointer;display:flex;justify-content:space-between}
+.menu div:hover{background:#eef6e8}
+.menu .cur{background:#dcebd2;font-weight:700}
+.menu .ok{color:#5ea548}
+.menu .reset{border-top:1px solid #ddd;color:#a34;justify-content:center}
+.instructions p{margin:14px 0 0}
+.instructions p:first-child{margin-top:12px}
+.instructions code{font-family:'Courier New',monospace;font-weight:700;background:rgba(255,255,255,.22);padding:0 3px;border-radius:2px}
+.editor{display:flex;margin-top:34px;height:468px;background:#e0e0e0;border-radius:4px;position:relative;overflow:hidden;font-family:'Courier New',monospace;font-size:18px;color:#666}
+.gutter{width:37px;flex:none;background:#9b9b9b;padding-top:13px;text-align:center}
+.gutter div,.code .ln{height:28.35px;line-height:28.35px}
+.gutter div{color:#f1f1f1;font-family:'Cabin',sans-serif}
+.code{flex:1;padding:13px 13px 0}
+.code .ln{white-space:pre}
+.code .in{padding-left:22px}
+#css{display:block;width:calc(100% - 9px);margin:0 0 0 22px;border:0;outline:0;resize:none;background:#fff;padding:0;font:inherit;line-height:28.35px;color:#444;overflow:hidden}
+.next{position:absolute;right:20px;bottom:20px;background:#e3b96e;color:#fff;border:0;border-radius:4px;padding:0 16px;height:44px;font:500 19px 'Cabin',sans-serif;cursor:pointer}
+.next:hover{background:#d9a24a}
+.msg{position:absolute;right:20px;bottom:76px;max-width:420px;background:#fff;color:#4d6b43;padding:10px 14px;border-radius:5px;font:400 16px 'Cabin',sans-serif;box-shadow:0 3px 10px rgba(0,0,0,.2);display:none}
+.msg.show{display:block}
+.msg.good{background:#dff3cf}
+.credits{margin-top:24px;text-align:center;font-size:14px;color:#c9e3bf}
+.credits a{color:#d9edd1}
+.credits p{margin:0 0 24px}
+.lang{display:inline-block;background:rgba(255,255,255,.2);padding:3px 10px;border-radius:3px;color:#e9f5e1}
+
+.frame{flex:none;width:960px;height:960px;background:#6b5428;border-radius:18px;padding:15px;margin-top:-5px}
+.board{position:relative;width:930px;height:930px}
+.bg,#garden,#ref{display:grid;width:930px;height:930px}
+.bg{position:absolute;inset:0;grid-template-columns:repeat(5,1fr);grid-template-rows:repeat(5,1fr)}
+#garden{position:absolute;inset:0}
+#ref{position:absolute;left:-5000px;top:0;visibility:hidden}
+.cell{margin:0 1px 1px 0;background-color:#876b34;outline:1px solid rgba(0,0,0,.08);
+ background-image:radial-gradient(ellipse 28px 14px at 24% 38%,rgba(0,0,0,.07) 98%,transparent),radial-gradient(ellipse 14px 8px at 52% 15%,rgba(0,0,0,.07) 98%,transparent),radial-gradient(ellipse 26px 13px at 72% 78%,rgba(0,0,0,.07) 98%,transparent),radial-gradient(ellipse 30px 15px at 28% 80%,rgba(0,0,0,.07) 98%,transparent)}
+.w{background-color:#4a82b0;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='186' height='186'><g stroke='%236a9cc3' stroke-width='14' fill='none' stroke-linecap='round'><path d='M32 -10 C 58 30, 14 70, 34 100 C 50 130, 36 160, 30 196'/><path d='M112 -10 C 138 30, 94 70, 114 100 C 130 130, 116 160, 110 196'/></g></svg>");background-size:186px 186px;min-width:0;min-height:0}
+.f{visibility:hidden}
+#carrots{position:absolute;inset:0;pointer-events:none}
+#carrots svg{position:absolute}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+<symbol id="carrot" viewBox="0 0 92 120">
+ <ellipse cx="52" cy="102" rx="40" ry="14" fill="rgba(0,0,0,.2)"/>
+ <path d="M46 62C30 40 24 14 30 2 44 6 52 28 46 62Z" fill="#6fbf3a"/>
+ <path d="M46 62C50 36 62 12 74 6 80 22 66 48 46 62Z" fill="#8bd348"/>
+ <ellipse cx="42" cy="86" rx="35" ry="26" fill="#f39b1d"/>
+ <ellipse cx="42" cy="68" rx="35" ry="15" fill="#fbb53c"/>
+</symbol></defs></svg>
+
+<div class="page">
+ <div class="left">
+  <div class="head">
+   <h1>Grid Garden</h1>
+   <div class="levels">
+    <button id="prev" aria-label="Previous level">◀</button>
+    <div class="label" id="label">Level 1 of 28</div>
+    <button id="nextlvl" aria-label="Next level">▶</button>
+   </div>
+   <div class="menu" id="menu"></div>
+  </div>
+  <div class="instructions" id="instr"></div>
+  <div class="editor">
+   <div class="gutter" id="gutter"></div>
+   <div class="code" id="code"></div>
+   <div class="msg" id="msg"></div>
+   <button class="next" id="next">Next</button>
+  </div>
+  <div class="credits">
+   <p style="margin-top:34px">Grid Garden is created by <a href="https://codepip.com">Codepip</a> • <a href="#">YouTube</a> • <a href="#">Twitter</a> • <a href="#">GitHub</a> • <span class="lang">English</span></p>
+   <p>Want to learn more CSS? Play <a href="https://codepip.com/games/flexbox-froggy/">Flexbox Froggy</a> or <a href="https://codepip.com/games/anchoreum/">Anchoreum</a>.</p>
+  </div>
+ </div>
+ <div class="frame"><div class="board" id="board">
+  <div class="bg" id="bg"></div>
+  <div id="garden"></div>
+  <div id="carrots"></div>
+  <div id="ref"></div>
+ </div></div>
+</div>
+<style id="s-real"></style><style id="s-ref"></style>
+
+<script>
+const G5=['display: grid;','grid-template-columns: 20% 20% 20% 20% 20%;','grid-template-rows: 20% 20% 20% 20% 20%;'];
+const R5=['display: grid;','grid-template-rows: 20% 20% 20% 20% 20%;'];
+const C5=['display: grid;','grid-template-columns: 20% 20% 20% 20% 20%;'];
+const W='<code>#water</code>';
+
+const LV=[
+{p:G5,s:'grid-column-start: 3;',t:`<p>Welcome to Grid Garden, where you write CSS code to grow your carrot garden! Water only the areas that have carrots by using the <code>grid-column-start</code> property.</p><p>For example, <code>grid-column-start: 3;</code> will water the area starting at the 3rd vertical grid line, which is another way of saying the 3rd vertical border from the left in the grid.</p>`},
+{p:G5,s:'grid-column-start: 5;',t:`<p>Nice! Grid lines are numbered from the left starting at 1, so the 5th line is the left edge of the last column.</p><p>Use <code>grid-column-start</code> to water the carrots in the 5th column.</p>`},
+{p:G5,s:'grid-column-start: 1;\ngrid-column-end: 4;',t:`<p>The <code>grid-column-end</code> property sets the line where the area stops. Together, start and end let the water cover several columns.</p><p>Water the carrots with <code>grid-column-start: 1;</code> and <code>grid-column-end: 4;</code>.</p>`},
+{p:G5,s:'grid-column-start: 2;\ngrid-column-end: 6;',t:`<p>The area ends at the grid line you name, not at a column number. The last line of a 5-column grid is line 6.</p><p>Water the carrots from the 2nd line to the 6th.</p>`},
+{p:G5,s:'grid-column-start: 2;\ngrid-column-end: -2;',t:`<p>Negative numbers count grid lines from the right edge. <code>-1</code> is the last line, <code>-2</code> the one before it.</p><p>Water the carrots using <code>grid-column-end: -2;</code>.</p>`},
+{p:G5,s:'grid-column-start: 2;\ngrid-column-end: span 2;',t:`<p>Instead of a line number you can use <code>span</code> to cover a number of columns. <code>grid-column-end: span 2;</code> makes the area two columns wide.</p><p>Water the carrots, starting at line 2.</p>`},
+{p:G5,s:'grid-column-start: span 2;\ngrid-column-end: 5;',t:`<p><code>span</code> also works with <code>grid-column-start</code>. The area then ends at the end line and extends back that many columns.</p><p>Water the carrots with <code>grid-column-start: span 2;</code> and an end line.</p>`},
+{p:G5,s:'grid-column: 2 / 5;',t:`<p>The <code>grid-column</code> shorthand sets start and end at once: <code>grid-column: 2 / 4;</code> means start at line 2, end at line 4.</p><p>Water the carrots with <code>grid-column</code>.</p>`},
+{p:G5,s:'grid-row-start: 3;',t:`<p>Rows work like columns. <code>grid-row-start</code> places the water at a horizontal grid line, counted from the top.</p><p>Water the carrots in the 3rd row.</p>`},
+{p:G5,s:'grid-row-start: 2;\ngrid-row-end: 5;',t:`<p><code>grid-row-end</code> sets where the area stops vertically.</p><p>Water the carrots from line 2 to line 5.</p>`},
+{p:G5,s:'grid-row-start: span 2;\ngrid-row-end: 5;',t:`<p><code>span</code> works for rows too.</p><p>Water the carrots using <code>grid-row-start: span 2;</code> and an end line.</p>`},
+{p:G5,s:'grid-row: 3 / 6;',t:`<p>The <code>grid-row</code> shorthand sets start and end together: <code>grid-row: 3 / 5;</code>.</p><p>Water the carrots with <code>grid-row</code>.</p>`},
+{p:G5,s:'grid-area: 1 / 1 / 3 / 6;',t:`<p><code>grid-area</code> sets everything at once, in this order: row start / column start / row end / column end.</p><p>Water the carrots with <code>grid-area: 1 / 1 / 3 / 6;</code>.</p>`},
+{p:G5,s:'grid-area: 2 / 3 / 5 / 5;',t:`<p>Use <code>grid-area</code> to water the rectangle of carrots.</p><p>Remember: row start / column start / row end / column end.</p>`},
+{p:G5,s:'grid-area: 3 / 1 / 6 / 3;',t:`<p>Keep practicing <code>grid-area</code>. Find the grid lines around the carrots and write them in order.</p>`},
+{p:G5,s:'grid-area: 1 / 2 / -1 / -2;',t:`<p><code>grid-area</code> accepts negative lines too. Water the carrots, using <code>-1</code> to reach the bottom line and <code>-2</code> for the second line from the right.</p>`},
+{p:G5,n:5,w:[0],s:'order: 1;',t:`<p>Grid items are placed in source order. The <code>order</code> property changes that: lower values come first, and every item starts at <code>order: 0</code>.</p><p>Move ${W} to the end with <code>order: 1;</code>.</p>`},
+{p:G5,n:5,w:[3],s:'order: -1;',t:`<p>Negative <code>order</code> values move an item before everything else.</p><p>Move ${W} to the very first cell.</p>`},
+{p:G5,n:7,w:[1],s:'order: 2;',t:`<p>Items with the same <code>order</code> keep their source order. Give ${W} a higher number than its neighbors to send it to the end.</p>`},
+{sel:'#garden',p:R5,n:5,w:null,s:'grid-template-columns: 20% 20% 20% 20% 20%;',t:`<p>Now you style the garden itself. <code>grid-template-columns</code> defines the columns of the grid, one size for each.</p><p>Create five columns of <code>20%</code> each.</p>`},
+{sel:'#garden',p:R5,n:10,w:null,s:'grid-template-columns: repeat(5, 20%);',t:`<p>The <code>repeat()</code> function saves typing: <code>repeat(5, 20%)</code> is the same as five <code>20%</code> values.</p><p>Create five 20% columns using <code>repeat</code>.</p>`},
+{sel:'#garden',p:R5,n:2,w:null,s:'grid-template-columns: 1fr 5fr;',t:`<p>The <code>fr</code> unit divides the free space into fractions. <code>1fr 5fr</code> gives the second column five times the width of the first.</p><p>Water the carrots with <code>grid-template-columns: 1fr 5fr;</code>.</p>`},
+{sel:'#garden',p:C5,n:10,w:null,s:'grid-template-rows: 20% 20% 20% 20% 20%;',t:`<p><code>grid-template-rows</code> defines the height of each row.</p><p>Give the garden rows that are <code>20%</code> tall.</p>`},
+{sel:'#garden',p:C5,n:15,w:null,s:'grid-template-rows: 100px 100px 1fr;',t:`<p>Rows can mix units. Fixed sizes like <code>100px</code> and flexible <code>fr</code> units work together.</p><p>Make two rows of <code>100px</code> and a third that fills the rest.</p>`},
+{sel:'#garden',p:['display: grid;'],n:4,w:null,s:'grid-template: 50% 50% / 200px 1fr;',t:`<p>The <code>grid-template</code> shorthand sets rows and columns together: rows, a slash, then columns.</p><p>Create two rows of <code>50%</code> and columns of <code>200px</code> and <code>1fr</code>.</p>`},
+{sel:'#garden',p:['display: grid;'],n:6,w:null,s:'grid-template: 40% 60% / 1fr 2fr 1fr;',t:`<p>Try <code>grid-template</code> once more: two rows (<code>40%</code> and <code>60%</code>) over three columns (<code>1fr 2fr 1fr</code>).</p>`},
+{sel:'#garden',p:['display: grid;','grid-template-columns: 1fr 1fr;','grid-template-rows: 1fr 1fr;'],n:4,w:null,s:'grid-column-gap: 40px;',t:`<p>Gaps add space between tracks. <code>grid-column-gap</code> spaces the columns apart.</p><p>Add a <code>40px</code> gap between the columns.</p>`},
+{sel:'#garden',p:['display: grid;','grid-template-columns: 1fr 1fr 1fr;','grid-template-rows: 1fr 1fr;'],n:6,w:null,s:'grid-gap: 30px 60px;',t:`<p><code>grid-gap</code> sets both gaps at once: row gap first, then column gap.</p><p>Use a <code>30px</code> row gap and a <code>60px</code> column gap.</p>`}
+];
+LV.forEach(l=>{l.sel=l.sel||'#water';l.n=l.n||1;if(l.w===undefined)l.w=[0];});
+
+const $=id=>document.getElementById(id);
+const store={get(k,d){try{return JSON.parse(localStorage.getItem('gg.'+k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem('gg.'+k,JSON.stringify(v))}catch(e){}}};
+let level=Math.min(store.get('level',0),LV.length-1),answers=store.get('answers',{}),solved=store.get('solved',[]);
+
+function fill(root,l){root.innerHTML=Array.from({length:l.n},(_,i)=>`<div class="${l.w===null||l.w.includes(i)?'w':'f'}"></div>`).join('')}
+function css(scope,l,user){
+ user=user.replace(/[{}@<>]/g,'');
+ return `${scope}{${l.p.join('')}}`+(l.sel==='#garden'?`${scope}{${user}}`:`${scope} .w{${user}}`);
+}
+function rects(root){const b=root.getBoundingClientRect();return [...root.querySelectorAll('.w')].map(e=>{const r=e.getBoundingClientRect();return[r.left-b.left,r.top-b.top,r.width,r.height]})}
+function check(){
+ const l=LV[level];
+ $('s-real').textContent=css('#garden',l,$('css')?.value||'');
+ const a=rects($('garden')),b=rects($('ref'));
+ return a.length===b.length&&a.every((r,i)=>r.every((v,j)=>Math.abs(v-b[i][j])<1.5));
+}
+function drawCarrots(){
+ const c=$('carrots');c.innerHTML='';
+ rects($('ref')).forEach(([x,y,w,h])=>{
+  const nx=Math.max(1,Math.round(w/186)),ny=Math.max(1,Math.round(h/186)),sw=w/nx,sh=h/ny;
+  for(let i=0;i<nx;i++)for(let j=0;j<ny;j++){
+   const s=document.createElementNS('http://www.w3.org/2000/svg','svg');
+   s.setAttribute('viewBox','0 0 186 186');
+   Object.assign(s.style,{left:x+i*sw+'px',top:y+j*sh+'px',width:sw+'px',height:sh+'px'});
+   s.innerHTML='<use href="#carrot" x="10" y="8" width="92" height="120"/><use href="#carrot" x="94" y="62" width="92" height="120"/>';
+   c.appendChild(s);
+  }
+ });
+}
+function renderEditor(l){
+ const open=l.sel==='#garden'?'#garden {':'#garden {';
+ let html=`<div class="ln">#garden {</div>`;
+ const parts=[];
+ l.p.forEach(x=>parts.push(`<div class="ln in">${x}</div>`));
+ html+=parts.join('');
+ if(l.sel==='#garden'){
+  html+=`<textarea id="css" spellcheck="false" autocomplete="off" rows="1"></textarea><div class="ln">}</div>`;
+ }else{
+  html+=`<div class="ln">}</div><div class="ln"></div><div class="ln">#water {</div><textarea id="css" spellcheck="false" autocomplete="off" rows="1"></textarea><div class="ln">}</div>`;
+ }
+ $('code').innerHTML=html;
+ const ta=$('css');
+ ta.value=answers[level]||'';
+ const grow=()=>{ta.rows=Math.max(1,ta.value.split('\n').length)};
+ grow();
+ ta.addEventListener('input',()=>{grow();answers[level]=ta.value;store.set('answers',answers);check();});
+ ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();goNext();}});
+ ta.focus();
+}
+function load(n){
+ level=Math.max(0,Math.min(LV.length-1,n));store.set('level',level);
+ const l=LV[level];
+ $('label').textContent=`Level ${level+1} of ${LV.length}`;
+ $('prev').disabled=level===0;$('nextlvl').disabled=level===LV.length-1;
+ $('instr').innerHTML=l.t;
+ $('gutter').innerHTML=Array.from({length:14},(_,i)=>`<div>${i+1}</div>`).join('');
+ $('msg').className='msg';
+ fill($('garden'),l);fill($('ref'),l);
+ $('s-ref').textContent=css('#ref',l,l.s);
+ renderEditor(l);
+ drawCarrots();check();buildMenu();
+}
+function buildMenu(){
+ $('menu').innerHTML=LV.map((_,i)=>`<div class="${i===level?'cur':''}" data-i="${i}"><span>Level ${i+1}</span><span class="ok">${solved.includes(i)?'✓':''}</span></div>`).join('')+'<div class="reset" data-reset="1">Reset</div>';
+}
+function say(t,good){const m=$('msg');m.textContent=t;m.className='msg show'+(good?' good':'');clearTimeout(say.t);say.t=setTimeout(()=>m.className='msg',3200)}
+function goNext(){
+ if(check()){
+  if(!solved.includes(level)){solved.push(level);store.set('solved',solved)}
+  if(level===LV.length-1){say('You finished all 28 levels. Your garden is thriving!',true);buildMenu();return}
+  load(level+1);
+ }else{
+  const l=LV[level],t=$('css').value.trim();
+  say(!t?'Write some CSS in the editor first.':'Not quite. Water only the areas that have carrots.');
+ }
+}
+$('next').onclick=goNext;
+$('prev').onclick=()=>load(level-1);
+$('nextlvl').onclick=()=>load(level+1);
+$('label').onclick=()=>$('menu').classList.toggle('open');
+$('menu').onclick=e=>{
+ const d=e.target.closest('div[data-i],div[data-reset]');if(!d)return;
+ if(d.dataset.reset){answers={};solved=[];store.set('answers',answers);store.set('solved',solved);load(0)}
+ else load(+d.dataset.i);
+ $('menu').classList.remove('open');
+};
+document.addEventListener('click',e=>{if(!e.target.closest('.head'))$('menu').classList.remove('open')});
+$('bg').innerHTML='<div class="cell"></div>'.repeat(25);
+document.fonts?.ready.then(()=>{drawCarrots();check()});
+load(level);
+</script>
+</body>
+</html>
